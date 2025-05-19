@@ -1,47 +1,47 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
-    import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import ContactsTable from '../components/ContactTable.vue';
+import { useRoute } from 'vue-router';
 
-    const router = useRouter()
-    const user = ref({ name: '', email: '' }) // Se llenará luego desde API
+// const contactForm = ref({
+//     id: null,
+//     name: '',
+//     email: '',
+//     user_id: ''
+// })
 
-    onMounted(() => {
-        const isAuth = localStorage.getItem('isAuth') === 'true'
-        if (!isAuth) {
-            router.replace({ name: 'login' })
-        }
+const tablaTabulator = ref(null)
 
-    // Aquí se traen los datos del usuario desde la API 
-    })
+const columns = ref([
+    { title: 'ID', field: 'id' },
+    { title: 'Nombre', field: 'name' },
+    { title: 'Email', field: 'email' },
+    { title: 'User ID', field: 'user_id' }
+]);
 
-    const logout = () => {
-        localStorage.setItem('isAuth', false)
-        router.replace({ name: 'login' })
-    }
+const tabulatorOptions = ref({
+  locale: true,
+  pagination: true,
+  paginationMode: 'remote',
+  ajaxURL: 'http://localhost:8090/contacts',
+  paginationSize: 10,
+  layout: 'fitColumns',
+  footerElement: `<button class="-ml-2 rounded-sm px-4 py-1 bg-gray-200 hover:bg-gray-300 duration-300" id="agregar">
+                  Agregar
+                  </button>`
+});
 
-    const goToContacts = () => {
-        router.push({ name: 'contacts' })
-    }
+
+
+
+// miaumiaumiaumiaumiaumiaumiauiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiaumiau
+
+// const handleSubmit = async () => {
+//   const data = { ...contactForm.value }
+
+// }
 </script>
 
 <template>
-    <div class="profile-container">
-        <h1>Acá va la tabla de tabulator con los contactos (Solo si el usuario está logueado)</h1>
-        <h1>Si no está loguedo lo tira al login para que inicie sesión</h1>
-    </div>
+    <ContactsTable :columns="columns" :options="tabulatorOptions" ref="tablaTabulator"/>
 </template>
-
-<style scoped>
-    .profile-container {
-    max-width: 600px;
-    margin: 50px auto;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    }
-
-    h1 {
-    color: #2c3e50;
-    margin-bottom: 10px;
-    }
-</style>
