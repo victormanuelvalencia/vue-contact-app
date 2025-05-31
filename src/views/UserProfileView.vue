@@ -12,7 +12,7 @@ onMounted(async () => {
   const email = localStorage.getItem('userEmail')
 
   if (!isAuth || !email) {
-    return router.replace({ name: 'login' })
+    return router.replace({ name: 'account-options' })
   }
 
   try {

@@ -10,13 +10,13 @@
             <p>
                 Nuestra plataforma está diseñada para que puedas organizar, buscar y mantener tus contactos siempre actualizados.
                 <br /><br />
-                <strong>¿Nuevo por aquí?</strong> <em><router-link to="register">Regístrate</router-link></em> en unos pocos pasos y comienza a aprovechar todas las funcionalidades.
+                <strong>¿Nuevo por aquí?</strong> <router-link to="register">Regístrate</router-link> en unos pocos pasos y comienza a aprovechar todas las funcionalidades.
                 <br /><br />
-                Si ya tienes una cuenta, simplemente <em><router-link to="login">inicia sesión</router-link></em> y accede a tu espacio personal donde podrás administrar todos tus contactos sin complicaciones.
+                Si ya tienes una cuenta, simplemente <router-link to="login">inicia sesión</router-link> y accede a tu espacio personal donde podrás administrar todos tus contactos sin complicaciones.
             </p>
 
             <p class="call-to-action">
-                No esperes más, <em>regístrate</em> y comienza a disfrutar de una gestión de contactos inteligente y moderna.
+                No esperes más, regístrate y comienza a disfrutar de una gestión de contactos inteligente y moderna.
             </p>
         </div>
     </div>

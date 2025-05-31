@@ -32,6 +32,7 @@ const login = async () => {
     // Guardar estado de autenticación
     localStorage.setItem('isAuth', 'true')
     localStorage.setItem('userEmail', email.value)
+    
 
     router.push({ name: 'user-profile' })
 

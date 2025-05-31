@@ -7,8 +7,6 @@
     <RouterLink :to="{ name: 'home' }" class="menu-link">Home</RouterLink>
     <RouterLink :to="{ name: 'contacts' }" class="menu-link">Contactos</RouterLink>
     <RouterLink :to="{ name: 'user-profile' }" class="menu-link">Cuenta</RouterLink>
-    <RouterLink :to="{ name: 'login' }" class="menu-link">Login</RouterLink>
-    <RouterLink :to="{ name: 'register' }" class="menu-link">Registrarse</RouterLink>
   </nav>
 </template>
 
