@@ -34,7 +34,7 @@ const register = async () => {
     }
 
     localStorage.setItem('isAuth', 'true')
-    router.push({ name: 'contacts' })
+    router.push({ name: 'login' })
 
   } catch (error) {
     errorMsg.value = error.message

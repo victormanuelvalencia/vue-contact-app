@@ -3,10 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const user = ref({}) // nombre, apellido, email, etc.
+const user = ref({})
 const error = ref('')
 
-// Función que se ejecuta al montar el componente
 onMounted(async () => {
   const isAuth = localStorage.getItem('isAuth') === 'true'
   const email = localStorage.getItem('userEmail')
@@ -30,8 +29,7 @@ onMounted(async () => {
 })
 
 const logout = () => {
-  localStorage.setItem('isAuth', 'false')
-  localStorage.removeItem('userEmail')
+  localStorage.clear() // Limpia todo el almacenamiento local para evitar residuos
   router.replace({ name: 'login' })
 }
 
@@ -53,6 +51,7 @@ const goToContacts = () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .profile-container {
