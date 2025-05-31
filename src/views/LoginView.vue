@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const loading = ref(false)
-
 const email = ref('')
 const password = ref('')
 const errorMsg = ref('')
@@ -29,10 +28,11 @@ const login = async () => {
       throw new Error(data.message || 'Error al iniciar sesión')
     }
 
-    // Guardar estado de autenticación
+    // Guardar estado de autenticación y datos importantes en localStorage
     localStorage.setItem('isAuth', 'true')
-    localStorage.setItem('userEmail', email.value)
-    
+    localStorage.setItem('userEmail', data.user.email)
+    localStorage.setItem('userId', data.user.id)
+    console.log('userId guardado en localStorage:', data.user.id)
 
     router.push({ name: 'user-profile' })
 
@@ -43,6 +43,7 @@ const login = async () => {
   }
 }
 </script>
+
 
 <template>
   <div class="page-wrapper">
