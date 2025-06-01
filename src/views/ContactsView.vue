@@ -122,8 +122,9 @@ onMounted(fetchContacts)
 }
 
 .title {
-  font-size: 2.2rem;
-  color: #2c3e50;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #34495e;
   position: relative;
   left: +20px; /* Mueve el botón 12px a la izquierda */
 }
@@ -167,6 +168,6 @@ onMounted(fetchContacts)
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
-  justify-content: start;
+  justify-content: center;
 }
 </style>

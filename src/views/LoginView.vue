@@ -105,7 +105,8 @@ const login = async () => {
 h1 {
   font-size: 1.8rem;
   margin-bottom: 30px;
-  color: #2c3e50;
+  font-weight: 700;
+  color: #34495e;
 }
 
 .input-group {

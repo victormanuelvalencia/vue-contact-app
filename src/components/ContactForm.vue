@@ -121,6 +121,7 @@ h2 {
 }
 
 .input {
+  background-color: #f1f3f6;
   width: 100%;
   padding: 12px 16px;
   margin: 10px 0;

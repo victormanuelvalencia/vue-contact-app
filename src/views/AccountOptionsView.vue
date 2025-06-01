@@ -56,7 +56,8 @@ a:hover {
 h1 {
   font-size: 2.8em;
   margin-bottom: 12px;
-  color: #2c3e50;
+  font-weight: 700;
+  color: #34495e;
   font-weight: 700;
 }
 

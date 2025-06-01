@@ -131,7 +131,9 @@ const register = async () => {
 h1 {
   font-size: 1.8rem;
   margin-bottom: 30px;
-  color: #2c3e50;
+  margin-bottom: 30px;
+  font-weight: 700;
+  color: #34495e;
 }
 
 .form-grid {

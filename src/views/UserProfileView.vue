@@ -69,7 +69,7 @@ const goToContacts = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   min-height: 65vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -103,14 +103,12 @@ const goToContacts = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.25);
   transition: box-shadow 0.4s ease, transform 0.3s ease;
   cursor: default;
 }
 
 .avatar:focus,
 .avatar:hover {
-  box-shadow: 0 12px 28px rgba(52, 152, 219, 0.5);
   transform: scale(1.05);
   outline: none;
 }
