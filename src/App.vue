@@ -15,17 +15,17 @@
 </template>
 
 <style scoped>
-.app-container {
-  
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; 
-  background-color: #f5f6fa;     
-}
+  .app-container {
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    background-color: #f5f6fa;     
+  }
 
-.content {
-  flex: 1; 
-  padding: 1em;
-  overflow-y: auto;
-}
+  .content {
+    flex: 1; 
+    padding: 1em;
+    overflow-y: auto;
+  }
 </style>

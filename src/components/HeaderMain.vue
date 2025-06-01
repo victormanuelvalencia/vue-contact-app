@@ -11,7 +11,6 @@
 </template>
 
 <style scoped>
-  /* Contenedor principal */
   .menu {
     position: sticky;
     top: 0;
@@ -28,7 +27,6 @@
     user-select: none;
   }
 
-  /* Enlaces */
   .menu-link {
     color: #ecf0f1;
     font-weight: 600;
@@ -40,7 +38,6 @@
     box-shadow: inset 0 0 0 0 transparent;
   }
 
-  /* Hover y focus accesible */
   .menu-link:hover,
   .menu-link:focus-visible {
     background-color: #3498db;
@@ -49,14 +46,12 @@
     outline: none;
   }
 
-  /* Estado activo del link */
   .menu-link.router-link-exact-active {
     background-color: #27ae60;
     color: white;
     font-weight: 700;
   }
 
-  /* Responsive para pantallas pequeñas */
   @media (max-width: 480px) {
     .menu {
       gap: 16px;

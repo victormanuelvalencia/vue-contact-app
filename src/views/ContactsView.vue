@@ -1,69 +1,69 @@
 <script setup>  
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import ContactForm from '../components/ContactForm.vue'
-import ContactCard from '../components/ContactCard.vue'
+  import { ref, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+  import ContactForm from '../components/ContactForm.vue'
+  import ContactCard from '../components/ContactCard.vue'
 
-const router = useRouter()
-const contacts = ref([])
-const loading = ref(true)
-const error = ref(null)
+  const router = useRouter()
+  const contacts = ref([])
+  const loading = ref(true)
+  const error = ref(null)
 
-const isAuth = localStorage.getItem('isAuth') === 'true'
-const userId = localStorage.getItem('userId')
+  const isAuth = localStorage.getItem('isAuth') === 'true'
+  const userId = localStorage.getItem('userId')
 
-const showForm = ref(false)
-const editingContact = ref(null)
+  const showForm = ref(false)
+  const editingContact = ref(null)
 
-if (!isAuth || !userId) {
-  error.value = 'Debes iniciar sesión para ver tus contactos.'
-  loading.value = false
-  contacts.value = []
-  setTimeout(() => router.replace({ name: 'account-options' }), 1500)
-}
-
-const fetchContacts = async () => {
-  try {
-    const res = await fetch(`http://localhost:3000/api/contacts?userId=${userId}`)
-    if (!res.ok) throw new Error('Error al obtener contactos')
-    contacts.value = await res.json()
-  } catch (err) {
-    error.value = err.message
-  } finally {
+  if (!isAuth || !userId) {
+    error.value = 'Debes iniciar sesión para ver tus contactos.'
     loading.value = false
+    contacts.value = []
+    setTimeout(() => router.replace({ name: 'account-options' }), 1500)
   }
-}
 
-const handleCreateOrUpdate = (contact, isEditing) => {
-  if (isEditing) {
-    const index = contacts.value.findIndex(c => c.id === contact.id)
-    if (index !== -1) contacts.value[index] = contact
-  } else {
-    contacts.value.push(contact)
+  const fetchContacts = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/contacts?userId=${userId}`)
+      if (!res.ok) throw new Error('Error al obtener contactos')
+      contacts.value = await res.json()
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      loading.value = false
+    }
   }
-  showForm.value = false
-  editingContact.value = null
-}
 
-const editContact = (contact) => {
-  editingContact.value = contact
-  showForm.value = true
-}
-
-const deleteContact = async (id) => {
-  if (!confirm('¿Estás seguro de eliminar este contacto?')) return
-  try {
-    const res = await fetch(`http://localhost:3000/api/contacts/${id}`, {
-      method: 'DELETE'
-    })
-    if (!res.ok) throw new Error('Error al eliminar contacto')
-    contacts.value = contacts.value.filter(c => c.id !== id)
-  } catch (err) {
-    error.value = err.message
+  const handleCreateOrUpdate = (contact, isEditing) => {
+    if (isEditing) {
+      const index = contacts.value.findIndex(c => c.id === contact.id)
+      if (index !== -1) contacts.value[index] = contact
+    } else {
+      contacts.value.push(contact)
+    }
+    showForm.value = false
+    editingContact.value = null
   }
-}
 
-onMounted(fetchContacts)
+  const editContact = (contact) => {
+    editingContact.value = contact
+    showForm.value = true
+  }
+
+  const deleteContact = async (id) => {
+    if (!confirm('¿Estás seguro de eliminar este contacto?')) return
+    try {
+      const res = await fetch(`http://localhost:3000/api/contacts/${id}`, {
+        method: 'DELETE'
+      })
+      if (!res.ok) throw new Error('Error al eliminar contacto')
+      contacts.value = contacts.value.filter(c => c.id !== id)
+    } catch (err) {
+      error.value = err.message
+    }
+  }
+
+  onMounted(fetchContacts)
 </script>
 
 <template>
@@ -107,67 +107,67 @@ onMounted(fetchContacts)
 </template>
 
 <style scoped>
-.contacts-container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
-  position: relative;
-}
+  .contacts-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    position: relative;
+  }
 
-.header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
 
-.title {
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #34495e;
-  position: relative;
-  left: +20px; /* Mueve el botón 12px a la izquierda */
-}
+  .title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #34495e;
+    position: relative;
+    left: +20px; /* Mueve el botón 12px a la izquierda */
+  }
 
-.new-contact-btn {
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  left: -70px; /* Mueve el botón 12px a la izquierda */
+  .new-contact-btn {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    left: -70px; /* Mueve el botón 12px a la izquierda */
 
-}
+  }
 
-.new-contact-btn svg {
-  stroke: white;
-}
+  .new-contact-btn svg {
+    stroke: white;
+  }
 
-.new-contact-btn:hover {
-  background-color: #27ae60;
+  .new-contact-btn:hover {
+    background-color: #27ae60;
 
-}
+  }
 
-.status {
-  font-style: italic;
-  margin-top: 20px;
-  color: #666;
-}
+  .status {
+    font-style: italic;
+    margin-top: 20px;
+    color: #666;
+  }
 
-.status.error {
-  color: red;
-}
+  .status.error {
+    color: red;
+  }
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-}
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
 </style>
