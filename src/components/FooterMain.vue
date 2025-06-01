@@ -15,7 +15,7 @@
   
 <style scoped>
     .app-footer {
-        background-color: #2c3e50;
+      background: linear-gradient(90deg, #1b2735, #2c3e50);
         color: #ecf0f1;
         padding: 20px 0;
         text-align: center;
@@ -49,4 +49,3 @@
         }
     }
 </style>
-  

@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { User, Mail, Lock } from 'lucide-vue-next'
 
 const router = useRouter()
 const loading = ref(false)
@@ -11,7 +12,20 @@ const firstName = ref('')
 const lastName = ref('')
 const errorMsg = ref('')
 
+// Validación simple: todos los campos llenos
+const canRegister = computed(() =>
+  email.value.trim() !== '' &&
+  password.value.trim() !== '' &&
+  firstName.value.trim() !== '' &&
+  lastName.value.trim() !== ''
+)
+
 const register = async () => {
+  if (!canRegister.value) {
+    errorMsg.value = 'Por favor, llena todos los campos antes de registrar.'
+    return
+  }
+
   loading.value = true
   errorMsg.value = ''
 
@@ -33,7 +47,8 @@ const register = async () => {
       throw new Error(data.message || 'Error al registrar usuario')
     }
 
-    localStorage.setItem('isAuth', 'true')
+    // Aquí NO seteamos isAuth ni guardamos sesión
+    // Solo redirigimos al login para que inicie sesión
     router.push({ name: 'login' })
 
   } catch (error) {
@@ -49,65 +64,134 @@ const register = async () => {
     <div class="register-container">
       <h1>Regístrate</h1>
 
-      <input type="text" v-model="firstName" placeholder="Nombre" class="input" />
-      <input type="text" v-model="lastName" placeholder="Apellido" class="input" />
-      <input type="email" v-model="email" placeholder="Correo electrónico" class="input" />
-      <input type="password" v-model="password" placeholder="Contraseña" class="input" />
+      <form @submit.prevent="register" class="form-grid" novalidate>
+        <div class="input-group">
+          <User class="icon" />
+          <input type="text" v-model="firstName" placeholder="Nombre" required />
+        </div>
+        <div class="input-group">
+          <User class="icon" />
+          <input type="text" v-model="lastName" placeholder="Apellido" required />
+        </div>
+        <div class="input-group">
+          <Mail class="icon" />
+          <input type="email" v-model="email" placeholder="Correo electrónico" required />
+        </div>
+        <div class="input-group">
+          <Lock class="icon" />
+          <input type="password" v-model="password" placeholder="Contraseña" required />
+        </div>
+      </form>
 
       <p v-if="errorMsg" class="error-msg">{{ errorMsg }}</p>
 
-      <button :disabled="loading" @click="register" class="btn-login">
-        {{ loading ? 'Registrando...' : 'Registrarse' }}
+      <button
+        :disabled="loading || !canRegister"
+        @click="register"
+        class="btn-login"
+        type="submit"
+        aria-disabled="loading || !canRegister"
+      >
+        <template v-if="loading">
+          <span class="spinner"></span> Registrando...
+        </template>
+        <template v-else>
+          Registrarse
+        </template>
       </button>
+      <p class="login-text">
+        ¿Ya tienes cuenta? 
+        <router-link to="login">Inicia sesión</router-link>
+      </p>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .page-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
-  background-color: #f5f6fa;
+  height: 50vh;
+  margin: 60px;
+  font-family: 'Inter', sans-serif;
 }
 
 .register-container {
   width: 100%;
-  max-width: 500px;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 850px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
   text-align: center;
-  font-family: Arial, sans-serif;
 }
 
 h1 {
+  font-size: 1.8rem;
   margin-bottom: 30px;
   color: #2c3e50;
 }
 
-.input {
-  width: 100%;
-  padding: 14px 16px;
+.form-grid {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px 24px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f1f3f6;
+  border-radius: 10px;
+  padding: 14px 18px;
   margin-bottom: 20px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid transparent;
+  transition: border 0.3s;
+}
+
+.input-group:focus-within {
+  border: 1px solid #3498db;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
   font-size: 1em;
-  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.icon {
+  color: #7f8c8d;
+  width: 20px;
+  height: 20px;
+}
+
+.error-msg {
+  color: #e74c3c;
+  margin-bottom: 18px;
+  font-weight: 500;
 }
 
 .btn-login {
-  background-color: #3498db;
+  background-color: #2ecc71;
   color: white;
   border: none;
   padding: 14px 0;
   font-size: 1.1em;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   width: 100%;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-login:disabled {
@@ -116,11 +200,39 @@ h1 {
 }
 
 .btn-login:hover:not(:disabled) {
-  background-color: #2980b9;
+  background-color: #27ae60;
 }
 
-.error-msg {
-  color: red;
-  margin-bottom: 20px;
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+}
+
+.login-text {
+  margin-top: 25px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.login-text a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.login-text a:hover {
+  outline: none;
+  color: #1c5980;
+  text-decoration: underline;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

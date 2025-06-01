@@ -1,6 +1,8 @@
-<script setup>
+<script setup>  
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import ContactForm from '../components/ContactForm.vue'
+import ContactCard from '../components/ContactCard.vue'
 
 const router = useRouter()
 const contacts = ref([])
@@ -11,23 +13,16 @@ const isAuth = localStorage.getItem('isAuth') === 'true'
 const userId = localStorage.getItem('userId')
 
 const showForm = ref(false)
-const name = ref('')
-const phone = ref('')
-const creating = ref(false)
-const createError = ref('')
+const editingContact = ref(null)
 
-// Validar acceso
 if (!isAuth || !userId) {
   error.value = 'Debes iniciar sesión para ver tus contactos.'
   loading.value = false
   contacts.value = []
-  // Redirigir después de 1.5 seg para mejor UX (opcional)
   setTimeout(() => router.replace({ name: 'account-options' }), 1500)
 }
 
 const fetchContacts = async () => {
-  if (!isAuth || !userId) return // Seguridad extra
-
   try {
     const res = await fetch(`http://localhost:3000/api/contacts?userId=${userId}`)
     if (!res.ok) throw new Error('Error al obtener contactos')
@@ -39,92 +34,128 @@ const fetchContacts = async () => {
   }
 }
 
-const createContact = async () => {
-  if (!name.value) {
-    createError.value = 'El nombre es obligatorio'
-    return
+const handleCreateOrUpdate = (contact, isEditing) => {
+  if (isEditing) {
+    const index = contacts.value.findIndex(c => c.id === contact.id)
+    if (index !== -1) contacts.value[index] = contact
+  } else {
+    contacts.value.push(contact)
   }
+  showForm.value = false
+  editingContact.value = null
+}
 
-  creating.value = true
-  createError.value = ''
+const editContact = (contact) => {
+  editingContact.value = contact
+  showForm.value = true
+}
 
+const deleteContact = async (id) => {
+  if (!confirm('¿Estás seguro de eliminar este contacto?')) return
   try {
-    const res = await fetch('http://localhost:3000/api/contacts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId,
-        name: name.value,
-        phone: phone.value
-      })
+    const res = await fetch(`http://localhost:3000/api/contacts/${id}`, {
+      method: 'DELETE'
     })
-
-    if (!res.ok) throw new Error('Error al crear el contacto')
-    const newContact = await res.json()
-    contacts.value.push(newContact)
-
-    // Limpiar formulario
-    name.value = ''
-    phone.value = ''
-    showForm.value = false
+    if (!res.ok) throw new Error('Error al eliminar contacto')
+    contacts.value = contacts.value.filter(c => c.id !== id)
   } catch (err) {
-    createError.value = err.message
-  } finally {
-    creating.value = false
+    error.value = err.message
   }
 }
 
 onMounted(fetchContacts)
-
-// Opcional: escuchar logout en otra pestaña y limpiar
-window.addEventListener('storage', (event) => {
-  if (event.key === 'isAuth' && event.newValue !== 'true') {
-    contacts.value = []
-    router.replace({ name: 'account-options' })
-  }
-})
 </script>
 
 <template>
-  <div class="contacts-wrapper">
-    <h1>Tus Contactos</h1>
-
-    <button @click="showForm = !showForm" class="btn-toggle-form">
-      {{ showForm ? 'Cancelar' : 'Nuevo contacto' }}
-    </button>
-
-    <div v-if="showForm" class="form">
-      <h2>Agregar contacto</h2>
-      <input v-model="name" placeholder="Nombre" class="input" />
-      <input v-model="phone" placeholder="Teléfono" class="input" />
-      <button @click="createContact" :disabled="creating">Guardar</button>
-      <p v-if="createError" class="error-msg">{{ createError }}</p>
+  <div class="contacts-container">
+    <div class="header-row">
+      <h1 class="title">Tus Contactos</h1>
+      <button class="new-contact-btn" @click="showForm = true" aria-label="Nuevo contacto">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="24" height="24" viewBox="0 0 24 24" fill="none" 
+          stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+          >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </button>
     </div>
 
     <div v-if="loading" class="status">Cargando contactos...</div>
     <div v-else-if="error" class="status error">{{ error }}</div>
     <div v-else-if="contacts.length === 0" class="status">No tienes contactos registrados.</div>
 
-    <ul v-else class="contact-list">
-      <li v-for="contact in contacts" :key="contact.id" class="contact-card">
-        <h3>{{ contact.name }}</h3>
-        <p><strong>Teléfono:</strong> {{ contact.phone || 'No proporcionado' }}</p>
-      </li>
-    </ul>
+    <div class="cards">
+      <ContactCard
+        v-for="contact in contacts"
+        :key="contact.id"
+        :contact="contact"
+        @edit="editContact"
+        @delete="deleteContact"
+      />
+    </div>
+
+    <ContactForm
+      v-if="showForm"
+      :contact="editingContact"
+      :user-id="userId"
+      @save="handleCreateOrUpdate"
+      @cancel="() => { showForm = false; editingContact = null }"
+    />
   </div>
 </template>
 
-
 <style scoped>
-.contacts-wrapper {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+.contacts-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  position: relative;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  position: relative;
+  left: +20px; /* Mueve el botón 12px a la izquierda */
+}
+
+.new-contact-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -70px; /* Mueve el botón 12px a la izquierda */
+
+}
+
+.new-contact-btn svg {
+  stroke: white;
+}
+
+.new-contact-btn:hover {
+  background-color: #27ae60;
+
 }
 
 .status {
-  margin-top: 20px;
   font-style: italic;
+  margin-top: 20px;
   color: #666;
 }
 
@@ -132,36 +163,10 @@ window.addEventListener('storage', (event) => {
   color: red;
 }
 
-.contact-list {
-  list-style: none;
-  padding: 0;
-}
-
-.contact-card {
-  background: #f9f9f9;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-}
-
-.input {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
-}
-
-.btn-toggle-form {
-  margin: 12px 0;
-  padding: 8px 16px;
-  background-color: #2c3e50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-toggle-form:hover {
-  background-color: #1a252f;
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: start;
 }
 </style>

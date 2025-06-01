@@ -11,7 +11,12 @@ const goToRegister = () => router.push({ name: 'register' })
   <div class="account-options">
     <h1>¡Hola! 👋</h1>
     <p>Aún no has iniciado sesión.</p>
-    <p>Si ya tienes una cuenta, <router-link to="login">accede</router-link> con tus credenciales. Si no, <router-link to="register">regístrate</router-link> para comenzar a disfrutar del sistema.</p>
+    <p>
+      Si ya tienes una cuenta, 
+      <router-link to="login">accede</router-link> con tus credenciales. 
+      Si no, 
+      <router-link to="register">regístrate</router-link> para comenzar a disfrutar del sistema.
+    </p>
 
     <div class="buttons">
       <button class="login-btn" @click="goToLogin">Iniciar sesión</button>
@@ -26,47 +31,58 @@ const goToRegister = () => router.push({ name: 'register' })
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 100px;
-  padding: 40px;
-  background-color: #f4f6f8;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  margin: 80px auto 0;
+  padding: 40px 30px;
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #34495e;
+  user-select: none;
 }
 
 a {
-    color: #3498db;
+  color: #2980b9;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #1c5980;
+  text-decoration: underline;
 }
 
 h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
+  font-size: 2.8em;
+  margin-bottom: 12px;
   color: #2c3e50;
+  font-weight: 700;
 }
 
 p {
-  font-size: 1.1em;
-  color: #555;
-  margin-bottom: 10px;
+  font-size: 1.15em;
+  color: #4a5a6a;
+  margin-bottom: 14px;
+  line-height: 1.5;
 }
 
 .buttons {
   display: flex;
   gap: 30px;
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 button {
-  padding: 14px 28px;
-  font-size: 1.1em;
-  font-weight: bold;
+  padding: 16px 34px;
+  font-size: 1.15em;
+  font-weight: 700;
   border: none;
-  border-radius: 10px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  min-width: 150px;
+  min-width: 160px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .login-btn {
@@ -76,7 +92,7 @@ button {
 
 .login-btn:hover {
   background-color: #2980b9;
-  transform: scale(1.05);
+  transform: scale(1.07);
 }
 
 .register-btn {
@@ -86,6 +102,27 @@ button {
 
 .register-btn:hover {
   background-color: #27ae60;
-  transform: scale(1.05);
+  transform: scale(1.07);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .account-options {
+    margin: 60px 15px 0;
+    padding: 30px 20px;
+  }
+  h1 {
+    font-size: 2.2em;
+  }
+  p {
+    font-size: 1em;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 18px;
+  }
+  button {
+    min-width: 100%;
+  }
 }
 </style>
