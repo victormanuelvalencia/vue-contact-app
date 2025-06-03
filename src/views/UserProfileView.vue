@@ -80,7 +80,7 @@
     max-width: 420px;
     width: 100%;
     padding: 40px 30px 35px;
-    border-radius: 20px;
+    border-radius: 30px;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
     text-align: center;
     color: #2c3e50;

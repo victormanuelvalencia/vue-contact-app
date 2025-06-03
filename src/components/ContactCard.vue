@@ -36,7 +36,7 @@
 <style scoped>
     .card {
         background: #fff;
-        border-radius: 12px;
+        border-radius: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         padding: 20px;
         width: 280px;

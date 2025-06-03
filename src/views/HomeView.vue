@@ -46,7 +46,7 @@
     margin: 40px auto;
     padding: 30px 25px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border-radius: 12px;
+    border-radius: 20px;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
     text-align: center;
     color: #2c3e50;

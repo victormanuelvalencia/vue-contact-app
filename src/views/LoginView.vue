@@ -97,7 +97,7 @@
     max-width: 420px;
     background-color: white;
     padding: 30px;
-    border-radius: 20px;
+    border-radius:20px;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
     text-align: center;
   }

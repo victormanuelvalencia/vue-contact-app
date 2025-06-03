@@ -126,7 +126,7 @@
     font-weight: 700;
     color: #34495e;
     position: relative;
-    left: +20px; /* Mueve el botón 12px a la izquierda */
+    left: +20px; 
   }
 
   .new-contact-btn {
@@ -141,7 +141,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    left: -70px; /* Mueve el botón 12px a la izquierda */
+    left: -70px; 
 
   }
 
